@@ -13,7 +13,7 @@ let accessTokenData = {
 const getToken = async () => {
   if (isTokenExpired(accessTokenData)) {
     const tokenResponse = await fetchToken()
-    logger.info('Updating token', tokenResponse)
+    logger.info('Updating token')
     accessTokenData.expiresAt = (tokenResponse.expires_in * 1000) + Date.now()
     accessTokenData.token = tokenResponse.access_token
   }

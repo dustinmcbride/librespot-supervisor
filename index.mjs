@@ -3,6 +3,14 @@ import fetch from 'node-fetch'
 import logger from './logger.mjs'
 import getToken from './token-service.mjs'
 import startSpotifyAuthService from './spotify-auth-service.mjs'
+import {promisify} from 'util'
+import {exec} from 'child_process'
+const execAsync = promisify(exec)
+
+
+const restartSnapserver = async() => {
+    await execAsync("lllls -la")
+}
 
 if (process.env.LOAD_LOGIN) {
   startSpotifyAuthService()
@@ -23,13 +31,19 @@ async function getDevices(token) {
 }
 
 async function go() {
-  logger.info('Starting...')
+  logger.info('Checking...')
   try {
   let token = await getToken()
   let devices = await getDevices(token)
   const device_name = process.env.SPOTIFY_DEVICE_NAME
   const found = devices.find(d => d.name === device_name)
   logger.info(`Device found: ${!!found}`)
+
+  if (!found) {
+    logger.info('Restarting snapserver...')
+    restartResults = await restartSnapserver()
+  }
+
   } catch (e) {
     logger.error('Error in go', e)
   }
@@ -37,4 +51,4 @@ async function go() {
 
 
 go()
-setInterval(() => go(), 1000*30)
+setInterval(() => go(), 1000*60*2)
