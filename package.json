@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.mjs"
-
   },
   "prettier": {
     "trailingComma": "es5",
     "tabWidth": 4,
     "semi": false,
     "singleQuote": true
+  },
+  "engines": {
+    "node": ">=16"
   },
   "author": "",
   "license": "ISC",
